@@ -185,8 +185,6 @@ class Music:
             os.rename(file, dst)
             print("Done")
 
-
-
 def main():
     """Runs the whole program"""
     argv = sys.argv[3:]
