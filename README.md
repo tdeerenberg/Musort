@@ -2,17 +2,25 @@
 
 # Musort
 
-A Python3 program that renames all selected music/audio files in a folder with a specified naming convention 
+A Python3 program that renames all selected music/audio files in a folder with a specified naming convention. Names are generated from the metadata (ID3) from the audio files. Before using this program, use a metadata editor like MusicBrainz Picard, Beets or EasyTAG to add the correct metadata to the audio files.
 
 ## Features
 
-- Rename many audio files at once
-- Rename all files in subdirectories as well (recursive)
-- Choose the naming convention (ex. track.title.flac or artist.track.year.mp3)
-- Give a separator for the naming of the file (ex. track.title.flac or track_title.flac)
-- Works on all systems that can run Python
-
-
+* Rename many audio files at once
+* Rename all files in subdirectories as well (recursive)
+* Choose the naming convention (ex. track.title.flac or artist.track.year.mp3)
+* Give a separator for the naming of the file (ex. track.title.flac or track_title.flac)
+* Works on all systems that can run Python
+* Supported audio formats  
+  * MP3/MP2/MP1 (ID3 v1, v1.1, v2.2, v2.3+)
+  * Wave/RIFF
+  * OGG
+  * OPUS
+  * FLAC
+  * WMA
+  * MP4/M4A/M4B/M4R/M4V/ALAC/AAX/AAXC
+  * AIFF/AIFF-C
+  
 ## Demo
 
 
@@ -34,7 +42,7 @@ Alternatively, you could move `musort.py` into a directory in your `$PATH` and r
 musort music_directory track.title.year -s _ -r
 ```
 
-## Manual (options and arguments)
+## Manual (options and arguments) `musort --help`
 ```
 Musort © 2023 tdeerenberg (github.com/tdeerenberg)
 
@@ -79,6 +87,16 @@ title           title of the song
 track           track number as string
 track_total     total number of tracks as string
 year            year or date as string
+
+SUPPORTED AUDIO FORMATS:
+MP3/MP2/MP1 (ID3 v1, v1.1, v2.2, v2.3+)
+Wave/RIFF
+OGG
+OPUS
+FLAC
+WMA
+MP4/M4A/M4B/M4R/M4V/ALAC/AAX/AAXC
+AIFF/AIFF-C
 ```
 ## Authors
 
