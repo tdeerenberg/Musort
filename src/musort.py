@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+# Licensed under GPLv3
+# Copyright (C) 2023 tdeerenberg
+
 from tinytag import TinyTag
 import os
 import sys, getopt
@@ -47,7 +50,16 @@ samplerate      samples per second
 title           title of the song
 track           track number as string
 track_total     total number of tracks as string
-year            year or date as string"""
+year            year or date as string
+
+SUPPORTED AUDIO FORMATS:
+MP3/MP2/MP1 (ID3 v1, v1.1, v2.2, v2.3+)
+Wave/RIFF
+OGG
+OPUS
+FLAC
+WMA
+MP4/M4A/M4B/M4R/M4V/ALAC/AAX/AAXC"""
 
 class Music:
     def get_compatible(self, directory):
