@@ -29,19 +29,23 @@ A Python3 program that renames all selected music/audio files in a folder with a
 - [TinyTag](https://pypi.org/project/tinytag/) (Installable from Python Package Index)
 ## Installation and Usage
 
+### Method 1: Run installation script (Unix/Linux based OS only)
+The installation script will move the python program to `~/.local/bin`. Make sure that `~/.local/bin` exists and that is added to $PATH.
+``` Bash
+git clone https://github.com/tdeerenberg/Musort.git
+cd Musort.git
+chmod +x install.sh
+./install.sh
+```
+After that, simply use the command `musort` to use the program.
+### Method 2: Clone repo and run manually (All Operating Systems)
 Clone the repository and run the Python program
-
 ``` Bash
 git clone https://github.com/tdeerenberg/Musort.git
 cd Musort
 pip install requirements.txt
-python3 musort.py
 ```
-Alternatively, you could move `musort.py` into a directory in your `$PATH` and rename `musort.py` to `musort`. After that, the program can run like this:
-``` Bash
-musort music_directory track.title.year -s _ -r
-```
-
+After that, run the program with `python3 musort.py`.
 ## Manual (options and arguments) `musort --help`
 ```
 Musort © 2023 tdeerenberg (github.com/tdeerenberg)
