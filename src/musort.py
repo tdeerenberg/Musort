@@ -65,37 +65,21 @@ WMA
 MP4/M4A/M4B/M4R/M4V/ALAC/AAX/AAXC"""
 
 class Music:
-    def get_compatible(self, directory):
+    def get_files(self, directory):
         """Scans the set directory for compatible audio files"""
-        music = []
-        all_files = list(map(lambda x: os.path.join(os.path.abspath(directory), x),os.listdir(directory)))
-        for file in all_files:
-            match file.split("."):
-                case [*_, "flac"]:
-                    music.append(file)
-                case [*_, "mp3"]:
-                    music.append(file)
-                case [*_, "mp1"]:
-                    music.append(file)
-                case [*_, "mp2"]:
-                    music.append(file)
-                case [*_, "opus"]:
-                    music.append(file)
-                case [*_, "ogg"]:
-                    music.append(file)
-                case [*_, "wma"]:
-                    music.append(file)
-        self.directory = directory
-        self.compatible = music
+        self.files = list(map(lambda x: os.path.join(os.path.abspath(directory), x),os.listdir(directory)))
 
-    def get_compatible_recursive(self, directory):
+    def get_files_recursive(self, directory):
         """Scans the set directory with subdirectory for compatible audio files"""
         files = []
-        music = []
         for a, b, c in os.walk(directory):
             for d in c:
                 files.append(os.path.join(a,d))
-        for file in files:
+        self.files = files
+        
+    def get_compatible(self):
+        music = []
+        for file in self.files:
             match file.split("."):
                 case [*_, "flac"]:
                     music.append(file)
@@ -111,7 +95,6 @@ class Music:
                     music.append(file)
                 case [*_, "wma"]:
                     music.append(file)
-        self.directory = directory
         self.compatible = music
 
     def set_separator(self, sep):
@@ -206,7 +189,8 @@ def main():
             music.set_separator(arg)
         if opt in ['-r', '--recursive']:
             logging.info("Running recursively")
-            music.get_compatible_recursive(sys.argv[1])
+            music.get_files_recursive(sys.argv[1])
+            music.get_compatible()
 
     if sys.argv[1] == "-h" or sys.argv[1] == '--help':
         print(help)
@@ -218,7 +202,8 @@ def main():
         music.compatible
     except:
         logging.info("Running not recursively")
-        music.get_compatible(sys.argv[1])
+        music.get_files(sys.argv[1])
+        music.get_compatible()
     try:
         music.separator
     except:
