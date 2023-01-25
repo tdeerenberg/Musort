@@ -1,7 +1,7 @@
 https://user-images.githubusercontent.com/113618658/214463785-49c419e9-c959-4849-91d2-f3407ecaa73d.mp4
 # Musort
 
-A Python3 program that renames all selected music/audio files in a folder with a specified naming convention. Names are generated from the metadata (ID3) from the audio files. Before using this program, use a metadata editor like MusicBrainz Picard, Beets or EasyTAG to add the correct metadata to the audio files.
+Ogranize your music library. A Python3 program that renames all selected music/audio files in a folder with a specified naming convention. Names are generated from the metadata (ID3) from the audio files. Before using this program, use a metadata editor like MusicBrainz Picard, Beets or EasyTAG to add the correct metadata to the audio files.
 
 ## Features
 
