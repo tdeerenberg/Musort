@@ -8,8 +8,9 @@ import os
 import sys, getopt
 import logging
 
+version = "Musort v0.1 (c) tdeerenberg"
 help=\
-"""Musort © 2023 tdeerenberg (github.com/tdeerenberg)
+"""Musort (c) 2023 tdeerenberg (github.com/tdeerenberg)
 
 DESCRIPTION:
 A Python3 program that renames all selected music/audio files in a folder with a specified naming convention
@@ -27,6 +28,7 @@ OPTIONAL OPTIONS:
 -s, --separator      Set the separator for the filename (ex. '-s .' -> 01.track.flac and '-s -' -> 01-track.mp3)
                      Default separator ( . ) will be used if none is given
 -r, --recursive      Rename files in subdirectories as well
+-v, --version        Prints the version number
 
 NAMING CONVENTION:
 FORMAT_OPTION.FORMAT_OPTION...      The amount of format options does not matter.
@@ -192,23 +194,26 @@ def main():
     """Runs the whole program"""
     argv = sys.argv[3:]
     try:
-        opts, args = getopt.getopt(argv, "s:rh", ["sep=", "recursive=", "help="])
+        opts, args = getopt.getopt(argv, "s:r", ["sep=", "recursive="])
     except getopt.GetoptError as err:
         logging.error(err)
         exit()
 
     music = Music()
     for opt, arg in opts:
-        if opt in ['-h']:
-            print(help)
-            exit()
-        if opt in ['-s']:
+        if opt in ['-s', '--separator']:
             logging.info(f"Using {arg} as separator")
             music.set_separator(arg)
-        if opt in ['-r']:
+        if opt in ['-r', '--recursive']:
             logging.info("Running recursively")
             music.get_compatible_recursive(sys.argv[1])
 
+    if sys.argv[1] == "-h" or sys.argv[1] == '--help':
+        print(help)
+        exit()
+    if sys.argv[1] == '-v' or sys.argv[1] == '--version':
+        print(version)
+        exit()
     try:
         music.compatible
     except:
