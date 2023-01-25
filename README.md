@@ -1,5 +1,4 @@
-<img src="https://user-images.githubusercontent.com/113618658/214139255-c81222c9-48a2-46c9-a509-3e613d390d55.jpg" width="340" height="200" />
-
+https://user-images.githubusercontent.com/113618658/214463785-49c419e9-c959-4849-91d2-f3407ecaa73d.mp4
 # Musort
 
 A Python3 program that renames all selected music/audio files in a folder with a specified naming convention. Names are generated from the metadata (ID3) from the audio files. Before using this program, use a metadata editor like MusicBrainz Picard, Beets or EasyTAG to add the correct metadata to the audio files.
@@ -20,11 +19,9 @@ A Python3 program that renames all selected music/audio files in a folder with a
   * WMA
   * MP4/M4A/M4B/M4R/M4V/ALAC/AAX/AAXC
   * AIFF/AIFF-C
-  
-## Demo
-
 
 ## Dependencies
+**Note: When using the install script, TinyTag will be automatically installed**
 - [Python3](https://www.python.org/)
 - [TinyTag](https://pypi.org/project/tinytag/) (Installable from Python Package Index)
 ## Installation and Usage
@@ -48,30 +45,23 @@ pip install requirements.txt
 After that, run the program with `python3 musort.py`.
 ## Manual (options and arguments) `musort --help`
 ```
-Musort © 2023 tdeerenberg (github.com/tdeerenberg)
-
-DESCRIPTION:
-A Python3 program that renames all selected music/audio files in a folder with a specified naming convention
-
 USAGE:
 musort [DIRECTORY] [NAMING_CONVENTION] [OPTIONAL_OPTIONS]...
-
     USAGE EXAMPLES:
     musort ~/music track.title.year -s _ -r
     musort /local/music disc.artist.title.album -r
     musort ~/my_music track.title
-
+    
 OPTIONAL OPTIONS:
 -h, --help           Show the help menu
 -s, --separator      Set the separator for the filename (ex. '-s .' -> 01.track.flac and '-s -' -> 01-track.mp3)
                      Default separator ( . ) will be used if none is given
 -r, --recursive      Rename files in subdirectories as well
-
+-v, --version        Prints the version number
 NAMING CONVENTION:
 FORMAT_OPTION.FORMAT_OPTION...      The amount of format options does not matter.
                                     It can be one, two, three, even all of them.
-                                    (See FORMAT OPTIONS below for all options)
-
+                                    (See FORMAT OPTIONS below for all options)                      
 FORMAT OPTIONS:
 album           album as string
 albumartist     album artist as string
@@ -91,16 +81,6 @@ title           title of the song
 track           track number as string
 track_total     total number of tracks as string
 year            year or date as string
-
-SUPPORTED AUDIO FORMATS:
-MP3/MP2/MP1 (ID3 v1, v1.1, v2.2, v2.3+)
-Wave/RIFF
-OGG
-OPUS
-FLAC
-WMA
-MP4/M4A/M4B/M4R/M4V/ALAC/AAX/AAXC
-AIFF/AIFF-C
 ```
 ## Authors
 
