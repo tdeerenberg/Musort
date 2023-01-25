@@ -82,6 +82,12 @@ track           track number as string
 track_total     total number of tracks as string
 year            year or date as string
 ```
+
+## Possible features to add
+* Rename single file
+* Other installation methods (Like AUR, Docker, etc.)
+* Open for suggestions!
+
 ## Authors
 
 - [@tdeerenberg](https://www.github.com/tdeerenberg)
