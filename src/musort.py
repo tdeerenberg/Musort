@@ -6,6 +6,7 @@
 from tinytag import TinyTag
 import os
 import sys, getopt
+import logging
 
 help=\
 """Musort © 2023 tdeerenberg (github.com/tdeerenberg)
@@ -134,7 +135,7 @@ class Music:
             track = TinyTag.get(file)
 
             """Print the progress (Current track)"""
-            print(f"\nCurrent track: '{track.title}' by '{track.artist}'")
+            logging.info(f"Current track: '{track.artist}' - '{track.title}'")
             rename = []
 
             """Uses the given format to set new filename"""
@@ -183,15 +184,17 @@ class Music:
             """Get the absolute path and rename the audio file"""
             dst = os.path.join(os.path.abspath(os.path.dirname(file)), rename)
             os.rename(file, dst)
-            print("Done")
+        logging.info("Actions finished")
 
 def main():
+    level = logging.DEBUG
+    logging.basicConfig(level=level, format='[%(levelname)s] %(asctime)s - %(message)s')
     """Runs the whole program"""
     argv = sys.argv[3:]
     try:
         opts, args = getopt.getopt(argv, "s:rh", ["sep=", "recursive=", "help="])
     except getopt.GetoptError as err:
-        print(err)
+        logging.error(err)
         exit()
 
     music = Music()
@@ -200,19 +203,21 @@ def main():
             print(help)
             exit()
         if opt in ['-s']:
+            logging.info(f"Using {arg} as separator")
             music.set_separator(arg)
         if opt in ['-r']:
+            logging.info("Running recursively")
             music.get_compatible_recursive(sys.argv[1])
 
     try:
         music.compatible
     except:
-        print("Running not recursively")
+        logging.info("Running not recursively")
         music.get_compatible(sys.argv[1])
     try:
         music.separator
     except:
-        print("Using default separator: .")
+        logging.info("Using default separator")
         music.set_separator(".")
 
     music.set_format(sys.argv[2])
