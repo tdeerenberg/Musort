@@ -93,7 +93,6 @@ class Music:
         """Sets the separator for naming the audio files
         (ex. 01-songname.mp3 or 01.songname.flac)"""
         self.separator = sep
-        self.separator_status = True
 
     def set_format(self, val):
         """Sets the naming convention of the audio files
