@@ -8,6 +8,8 @@ import os
 import sys, getopt
 import logging
 
+supported_formats = ["flac", "mp3", "mp2", "mp1", "opus", "ogg", "wma"]
+
 version = "Musort v0.1 (c) tdeerenberg"
 help=\
 """Musort (c) 2023 tdeerenberg (github.com/tdeerenberg)
@@ -80,21 +82,11 @@ class Music:
     def get_compatible(self):
         music = []
         for file in self.files:
-            match file.split("."):
-                case [*_, "flac"]:
-                    music.append(file)
-                case [*_, "mp3"]:
-                    music.append(file)
-                case [*_, "mp1"]:
-                    music.append(file)
-                case [*_, "mp2"]:
-                    music.append(file)
-                case [*_, "opus"]:
-                    music.append(file)
-                case [*_, "ogg"]:
-                    music.append(file)
-                case [*_, "wma"]:
-                    music.append(file)
+            file_extension = file.split(".")[-1]
+
+            if file_extension in supported_formats:
+                music.append(file)
+
         self.compatible = music
 
     def set_separator(self, sep):
@@ -102,6 +94,7 @@ class Music:
         (ex. 01-songname.mp3 or 01.songname.flac)"""
         self.separator = sep
         self.separator_status = True
+
     def set_format(self, val):
         """Sets the naming convention of the audio files
         (ex. title-artist or artist-track-title)"""
@@ -125,43 +118,13 @@ class Music:
 
             """Uses the given format to set new filename"""
             for f in self.format:
-                match f:
-                    case "track":
-                        rename.append(f"{int(track.track):02}")
-                    case "album":
-                        rename.append(track.album)
-                    case "albumartist":
-                        rename.append(track.albumartist)
-                    case "artist":
-                        rename.append(track.artist)
-                    case "audio_offset":
-                        rename.append(track.audio_offset)
-                    case "bitdepth":
-                        rename.append(track.bitdepth)
-                    case "bitrate":
-                        rename.append(track.bitrate)
-                    case "comment":
-                        rename.append(track.commment)
-                    case "composer":
-                        rename.append(track.composer)
-                    case "disc":
-                        rename.append(track.disc)
-                    case "disc_total":
-                        rename.append(track.disc_total)
-                    case "duration":
-                        rename.append(track.duration)
-                    case "filesize":
-                        rename.append(track.filesize)
-                    case "genre":
-                        rename.append(track.genre)
-                    case "samplerate":
-                        rename.append(track.samplerate)
-                    case "title":
-                        rename.append(track.title)
-                    case "track_total":
-                        rename.append(track.track_total)
-                    case "year":
-                        rename.append(track.year)
+
+                if f == "track":
+                    rename.append(f"{int(track.track):02}")
+                else:
+                    """getattr gets attribute in track with name f"""
+                    rename.append(getattr(track, f))
+
                 rename.append(self.separator)
             rename.pop()
             rename = ''.join(rename)+ext
@@ -212,5 +175,6 @@ def main():
 
     music.set_format(sys.argv[2])
     music.rename_music()
+
 if __name__ == "__main__":
     main()
