@@ -127,6 +127,11 @@ class Music:
                 rename.append(self.separator)
             rename.pop()
             rename = ''.join(rename)+ext
+            """Replacing forbidden path characters in UNIX and Windows with underscores"""
+            for forbidden_character in ['\\', '/', '|', '*', '<', '>', '"', '?']:
+                if forbidden_character in rename:
+                    logging.warning(f"Track '{track.artist}' - '{track.title}': found the forbidden path character ({forbidden_character}) in the new file name, replaced symbol with underscore")
+                    rename = rename.replace(forbidden_character, "_")
 
             """Get the absolute path and rename the audio file"""
             dst = os.path.join(os.path.abspath(os.path.dirname(file)), rename)
