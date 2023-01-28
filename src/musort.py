@@ -10,7 +10,7 @@ import logging
 
 supported_formats = ["flac", "mp3", "mp2", "mp1", "opus", "ogg", "wma"]
 
-version = "Musort v0.1 (c) tdeerenberg"
+version = "Musort v0.2 (c) tdeerenberg"
 help=\
 """Musort (c) 2023 tdeerenberg (github.com/tdeerenberg)
 
