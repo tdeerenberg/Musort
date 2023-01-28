@@ -87,6 +87,7 @@ year            year or date as string
 * Rename single file
 * Other installation methods (Like AUR, Docker, etc.)
 * Open for suggestions!
+* Feel free to open a pull request or issue!
 
 ## Authors
 
