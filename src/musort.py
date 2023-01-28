@@ -92,6 +92,9 @@ class Music:
     def set_separator(self, sep):
         """Sets the separator for naming the audio files
         (ex. 01-songname.mp3 or 01.songname.flac)"""
+        if sep in ['\\', '/', '|', '*', '<', '>', '"', '?']:
+            sep = "_"
+            logging.warning("Given separator contains invalid filename symbols, defaulting to .")
         self.separator = sep
 
     def set_format(self, val):
@@ -130,7 +133,7 @@ class Music:
             """Replacing forbidden path characters in UNIX and Windows with underscores"""
             for forbidden_character in ['\\', '/', '|', '*', '<', '>', '"', '?']:
                 if forbidden_character in rename:
-                    logging.warning(f"Track '{track.artist}' - '{track.title}': found the forbidden path character ({forbidden_character}) in the new file name, replaced symbol with underscore")
+                    logging.warning(f"Track contains forbidden path character ({forbidden_character}) in the new file name, replaced symbol with _")
                     rename = rename.replace(forbidden_character, "_")
 
             """Get the absolute path and rename the audio file"""
