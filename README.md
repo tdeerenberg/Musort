@@ -90,7 +90,7 @@ docker build -t musort .
 docker run --name musort --rm -it musort --help
 ```
 
-> Tip: You can alias something like `alias musortd=docker run --name musort --rm -it musort` then use `musortd` juse like `musort` usage is explained above
+> Tip: You can alias something like `alias musortd="docker run --name musort --rm -it musort"` then use `musortd` juse like `musort` usage is explained above
 
 
 ## Possible features to add
