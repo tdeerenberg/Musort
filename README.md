@@ -83,6 +83,16 @@ track_total     total number of tracks as string
 year            year or date as string
 ```
 
+## Docker
+
+```
+docker build -t musort .
+docker run --name musort --rm -it musort --help
+```
+
+> Tip: You can alias something like `alias musortd=docker run --name musort --rm -it musort` then use `musortd` juse like `musort` usage is explained above
+
+
 ## Possible features to add
 * Rename single file
 * Other installation methods (Like AUR, Docker, etc.)
