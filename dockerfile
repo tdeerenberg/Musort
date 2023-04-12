@@ -13,5 +13,5 @@ RUN python3 -m pip install pip --upgrade --no-cache-dir && \
 # Copy in code
 COPY ./src/musort.py musort.py
 
-# Usage: docker run -rm -n musort -it musort --help
+# docker run --name musort --rm -it musort --help
 ENTRYPOINT ["python3", "/app/musort.py"]
