@@ -43,6 +43,18 @@ cd Musort
 pip install requirements.txt
 ```
 After that, run the program with `python3 musort.py`.
+
+### Docker installation
+#### From source
+``` Bash
+git clone https://github.com/tdeerenberg/Musort.git
+cd Musort
+docker build -t musort .
+```
+ After the docker installation is complete, musort can be run with: `docker run --name musort --rm -v "/:/HostMountedFS" -it musort`
+ 
+> Tip: You could alias something like `alias musortd="docker run --name musort --rm -v "/:/HostMountedFS" -it musort"` then use `musortd` juse like `musort` usage is explained above
+
 ## Manual (options and arguments) `musort --help`
 ```
 USAGE:
@@ -82,16 +94,6 @@ track           track number as string
 track_total     total number of tracks as string
 year            year or date as string
 ```
-
-## Docker
-
-```
-docker build -t musort .
-docker run --name musort --rm -it musort --help
-```
-
-> Tip: You can alias something like `alias musortd="docker run --name musort --rm -it musort"` then use `musortd` juse like `musort` usage is explained above
-
 
 ## Possible features to add
 * Rename single file
