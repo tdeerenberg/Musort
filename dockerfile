@@ -2,7 +2,7 @@ FROM python:3.10-slim
 
 # Probably should do update/upgrade for any CVEs
 
-WORKDIR /app
+WORKDIR /
 
 # Set up requirements
 COPY requirements.txt requirements.txt
@@ -11,7 +11,7 @@ RUN python3 -m pip install pip --upgrade --no-cache-dir && \
     python3 -m pip install -r requirements.txt --no-cache-dir
 
 # Copy in code
-COPY ./src/musort.py musort.py
+COPY ./src/musort-docker.py /musort.py
 
 # docker run --name musort --rm -it musort --help
-ENTRYPOINT ["python3", "/app/musort.py"]
+ENTRYPOINT ["python3", "/musort.py"]
