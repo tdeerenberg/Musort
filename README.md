@@ -44,8 +44,7 @@ pip install requirements.txt
 ```
 After that, run the program with `python3 musort.py`.
 
-### Docker installation
-#### From source
+### Method 3: Docker installation
 ``` Bash
 git clone https://github.com/tdeerenberg/Musort.git
 cd Musort
