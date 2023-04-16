@@ -103,7 +103,7 @@ class Music:
     def set_format(self, val):
         """Sets the naming convention of the audio files
         (ex. title-artist or artist-track-title)"""
-        print(f"self format = {self.format}")
+        self.format = val.split(".")
 
     # Rename files
     def rename_music(self):
