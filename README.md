@@ -1,6 +1,6 @@
+https://github.com/tdeerenberg/Musort/assets/113618658/38ce8dc2-7a5f-4edd-9d56-11408d1d56dd
 
 # Musort
-
 Musort: Effortlessly organize your music library with this Python3 program. Rename selected music/audio files in a folder using a customizable naming convention based on metadata (ID3) from the audio files. Ensure accurate metadata by using popular tools like MusicBrainz Picard, Beets, or EasyTAG before running Musort. Simplify your music organization and enhance file names for a more enjoyable library experience.
 
 ## Features
