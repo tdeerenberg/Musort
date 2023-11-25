@@ -1,4 +1,7 @@
-# Musort - Docker installation
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+#
+# Musort - A command-line tool for effortlessly organizing and renaming your music files based on metadata
 # Copyright (C) 2023 tdeerenberg
 #
 # Sources on github:
@@ -21,19 +24,20 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-FROM python:3.11
+#
+# These are the default settings of Musort.
+# Default settings are used when no parameters are given.
+# The default settings may be changed to your liking.
+#
 
-# Update and upgrade packages
-RUN apt-get update && apt-get upgrade -y
+# Change separator between the naming format
+separator = "."
 
-# Set working directory
-WORKDIR /
+# Toggle recursively renaming though subdirectories
+recursive = False
 
-# Copy project
-COPY ./src/config.py /config.py
-COPY ./src/variables.py /variables.py
-COPY ./src/tinytag.py /tinytag.py
-COPY ./src/musort.py /musort.py
+# Format for renaming music files
+name_format = "track.title"
 
-# docker run --name musort --rm -it musort --help
-ENTRYPOINT ["python3", "/musort.py"]
+# Replacement for illegal characters
+forbidden_char_replace = "_"

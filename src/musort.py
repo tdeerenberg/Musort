@@ -1,187 +1,151 @@
 #!/usr/bin/env python
-
-# Licensed under GPLv3
+#
+# Musort - A command-line tool for effortlessly organizing and renaming your music files based on metadata
 # Copyright (C) 2023 tdeerenberg
+#
+# Sources on github:
+# https://github.com/tdeerenberg/Musort
+#
+# Licensed under the GNU General Public License v3.0 (GPLv3)
+# Copyright (C) 2023 tdeerenberg
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from tinytag import TinyTag
 import os
-import sys, getopt
+import sys
+import getopt
 import logging
+from config import *
+from variables import *
+from tinytag import TinyTag
 
-supported_formats = ["flac", "mp3", "mp2", "mp1", "opus", "ogg", "wma"]
+class Musort:
+    def __init__(self):
+        """Initial setup"""
+        self.recursive = recursive
+        self.separator = separator
+        self.format = name_format.split('.')
+        self.replace = forbidden_char_replace
+        self.directory = None
+        self.files = []
+        logging.basicConfig(level=logging.DEBUG, format='[%(levelname)s] %(asctime)s - %(message)s')
 
-version = "Musort v0.2 (c) tdeerenberg"
-help=\
-"""Musort (c) 2023 tdeerenberg (github.com/tdeerenberg)
+    def display_settings(self):
+        """Displays the settings"""
+        logging.info(f"Recursive renaming: '{self.recursive}'.")
+        logging.info(f"Separator: '{self.separator}'.")
+        logging.info(f"Format: {self.format}.")
 
-DESCRIPTION:
-A Python3 program that renames all selected music/audio files in a folder with a specified naming convention
+    def get_files(self):
+        """Check files from the given directory"""
+        if self.recursive:
+            self.files = [
+                os.path.join(root, filename)
+                for root, _, files in os.walk(self.directory)
+                for filename in files
+                if self.is_compatible(filename)
+            ]
+        else:
+            self.files = [
+                os.path.join(os.path.abspath(self.directory), filename)
+                for filename in os.listdir(self.directory)
+                if self.is_compatible(filename)
+            ]
 
-USAGE:
-musort [DIRECTORY] [NAMING_CONVENTION] [OPTIONAL_OPTIONS]...
+    def is_compatible(self, filename):
+        """Check if a file is one of the compatible music files based on the extension"""
+        file_extension = filename.split(".")[-1].lower()
+        return file_extension in supported_formats
 
-    USAGE EXAMPLES:
-    musort ~/music track.title.year -s _ -r
-    musort /local/music disc.artist.title.album -r
-    musort ~/my_music track.title
-
-OPTIONAL OPTIONS:
--h, --help           Show the help menu
--s, --separator      Set the separator for the filename (ex. '-s .' -> 01.track.flac and '-s -' -> 01-track.mp3)
-                     Default separator ( . ) will be used if none is given
--r, --recursive      Rename files in subdirectories as well
--v, --version        Prints the version number
-
-NAMING CONVENTION:
-FORMAT_OPTION.FORMAT_OPTION...      The amount of format options does not matter.
-                                    It can be one, two, three, even all of them.
-                                    (See FORMAT OPTIONS below for all options)
-
-FORMAT OPTIONS:
-album           album as string
-albumartist     album artist as string
-artist          artist name as string
-audio_offset    number of bytes before audio data begins
-bitdepth        bit depth for lossless audio
-bitrate         bitrate in kBits/s
-comment         file comment as string
-composer        composer as string 
-disc            disc number
-disc_total      the total number of discs
-duration        duration of the song in seconds
-filesize        file size in bytes
-genre           genre as string
-samplerate      samples per second
-title           title of the song
-track           track number as string
-track_total     total number of tracks as string
-year            year or date as string
-
-SUPPORTED AUDIO FORMATS:
-MP3/MP2/MP1 (ID3 v1, v1.1, v2.2, v2.3+)
-Wave/RIFF
-OGG
-OPUS
-FLAC
-WMA
-MP4/M4A/M4B/M4R/M4V/ALAC/AAX/AAXC"""
-
-class Music:
-    def get_files(self, directory):
-        """Scans the set directory for compatible audio files"""
-        self.files = list(map(lambda x: os.path.join(os.path.abspath(directory), x),os.listdir(directory)))
-
-    def get_files_recursive(self, directory):
-        """Scans the set directory with subdirectory for compatible audio files"""
-        files = []
-        for a, b, c in os.walk(directory):
-            for d in c:
-                files.append(os.path.join(a,d))
-        self.files = files
-        
-    def get_compatible(self):
-        music = []
-        for file in self.files:
-            file_extension = file.split(".")[-1]
-
-            if file_extension in supported_formats:
-                music.append(file)
-
-        self.compatible = music
-
-    def set_separator(self, sep):
-        """Sets the separator for naming the audio files
-        (ex. 01-songname.mp3 or 01.songname.flac)"""
-        if sep in ['\\', '/', '|', '*', '<', '>', '"', '?']:
-            sep = "_"
-            logging.warning("Given separator contains invalid filename symbols, defaulting to .")
-        self.separator = sep
-
-    def set_format(self, val):
-        """Sets the naming convention of the audio files
-        (ex. title-artist or artist-track-title)"""
-        self.format = val.split(".")
-
-    # Rename files
     def rename_music(self):
-        """Rename all compatible music files"""
+        """Rename all provided music"""
+        for file in self.files:
+            # Get the file extension
+            filename, extension = os.path.splitext(file)
 
-        """Get the file extension (ex. .flac, .mp3, etc)"""
-        for file in self.compatible:
-            ext = file.split(".")
-            ext = "." + ext[-1]
-
-            """Let TinyTag module read the audio file"""
+            # Read metadata
             track = TinyTag.get(file)
 
-            """Print the progress (Current track)"""
-            logging.info(f"Current track: '{track.artist}' - '{track.title}'")
+            # Show progress
+            logging.info(f"Renaming track: '{track.artist}' - '{track.title}'.")
+
+            # Use given format to set a new filename
             rename = []
-
-            """Uses the given format to set new filename"""
-            for f in self.format:
-
-                if f == "track":
+            for metadata_field in self.format:
+                if metadata_field == "track":
                     rename.append(f"{int(track.track):02}")
                 else:
-                    """getattr gets attribute in track with name f"""
-                    rename.append(getattr(track, f))
-
+                    rename.append(getattr(track, metadata_field))
                 rename.append(self.separator)
             rename.pop()
-            rename = ''.join(rename)+ext
-            """Replacing forbidden path characters in UNIX and Windows with underscores"""
-            for forbidden_character in ['\\', '/', '|', '*', '<', '>', '"', '?']:
-                if forbidden_character in rename:
-                    logging.warning(f"Track contains forbidden path character ({forbidden_character}) in the new file name, replaced symbol with _")
-                    rename = rename.replace(forbidden_character, "_")
 
-            """Get the absolute path and rename the audio file"""
-            dst = os.path.join(os.path.abspath(os.path.dirname(file)), rename)
-            os.rename(file, dst)
-        logging.info("Actions finished")
+            # Replace forbidden characters
+            rename = ''.join(rename)
+            for char in invalid_characters:
+                rename = rename.replace(char, self.replace)
 
-def main():
-    level = logging.DEBUG
-    logging.basicConfig(level=level, format='[%(levelname)s] %(asctime)s - %(message)s')
-    """Runs the whole program"""
-    argv = sys.argv[3:]
+            # Get absolute path and rename the audio file
+            new_path = os.path.join(os.path.abspath(os.path.dirname(file)), rename + extension)
+            os.rename(file, new_path)
+
+            logging.info(f"Track: '{track.artist}' - '{track.title}' contained an illegal character; the character has been replaced with: '{self.replace}'.")
+        logging.info("Renaming finished.")
+
+def parse_args(argv, m_class):
+    """Parse command line arguments"""
     try:
-        opts, args = getopt.getopt(argv, "s:r", ["sep=", "recursive="])
-    except getopt.GetoptError as err:
-        logging.error(err)
+        opts, args = getopt.getopt(argv[2:], "s:rf:", ["separator=", "recursive", "format="])
+    except getopt.GetoptError as error_mesg:
+        logging.error(error_mesg)
         exit()
 
-    music = Music()
+    # Handle command line arguments
     for opt, arg in opts:
         if opt in ['-s', '--separator']:
-            logging.info(f"Using {arg} as separator")
-            music.set_separator(arg)
-        if opt in ['-r', '--recursive']:
-            logging.info("Running recursively")
-            music.get_files_recursive(sys.argv[1])
-            music.get_compatible()
+            m_class.separator = arg if check_separator(arg) else default_separator
+        elif opt in ['-r', '--recursive']:
+            m_class.recursive = True
+        elif opt in ['-f', '--format']:
+            m_class.format = arg.split(".")
 
-    if sys.argv[1] == "-h" or sys.argv[1] == '--help':
-        print(help)
+    # Handle help and version options
+    if '-h' in sys.argv or '--help' in sys.argv:
+        print(help_text)
         exit()
-    if sys.argv[1] == '-v' or sys.argv[1] == '--version':
-        print(version)
+    elif '-v' in sys.argv or '--version' in sys.argv:
+        print(version_text)
         exit()
-    try:
-        music.compatible
-    except:
-        logging.info("Running not recursively")
-        music.get_files(sys.argv[1])
-        music.get_compatible()
-    try:
-        music.separator
-    except:
-        logging.info("Using default separator")
-        music.set_separator(".")
 
-    music.set_format(sys.argv[2])
-    music.rename_music()
+    # Set directory
+    m_class.directory = sys.argv[1]
+    
+    if m_class.directory is None:
+        logging.error("Please provide a music directory.")
+        exit()
+
+def check_separator(sep):
+    if any(char in separator for char in invalid_characters):
+        logging.warning(f"Given separator contains invalid filename symbols, defaulting to '{separator}'.\n")
+        return False
+    return True
+
+def main():
+    m_class = Musort()
+    parse_args(sys.argv, m_class)
+    m_class.get_files()
+    m_class.display_settings()
+    m_class.rename_music()
 
 if __name__ == "__main__":
     main()
