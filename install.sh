@@ -39,6 +39,7 @@ if [ -e "$install_path/$script_name" ]; then
         cp "$script_config" "$install_path/"
         cp "$script_tinytag" "$install_path/"
         cp "$script_variables" "$install_path/"
+        chmod +x "$install_path/$script_name"
         echo "Musort updated successfully!"
     else
         echo "Upgrade canceled. Musort remains unchanged."
@@ -49,6 +50,7 @@ else
     cp "$script_config" "$install_path/"
     cp "$script_tinytag" "$install_path/"
     cp "$script_variables" "$install_path/"
+    chmod +x "$install_path/$script_name"
     echo "Musort installed successfully!"
 fi
 
