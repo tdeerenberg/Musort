@@ -27,13 +27,13 @@ FROM python:3.11
 RUN apt-get update && apt-get upgrade -y
 
 # Set working directory
-WORKDIR /
+WORKDIR /opt/musort/
 
 # Copy project
-COPY ./src/config.py /config.py
-COPY ./src/variables.py /variables.py
-COPY ./src/tinytag.py /tinytag.py
-COPY ./src/musort.py /musort.py
+COPY ./src/config.py /opt/musort/config.py
+COPY ./src/variables.py /opt/musort/variables.py
+COPY ./src/tinytag.py /opt/musort/tinytag.py
+COPY ./src/musort.py /opt/musort/musort.py
 
 # docker run --name musort --rm -it musort --help
-ENTRYPOINT ["python3", "/musort.py"]
+ENTRYPOINT ["python3", "musort.py"]
