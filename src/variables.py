@@ -24,7 +24,7 @@
 
 version_text = "Musort v1.0 (C) tdeerenberg"
 supported_formats = ["flac", "mp3", "mp2", "mp1", "opus", "ogg", "wma"]
-invalid_characters = ["\\", "/", "|", "*", "<", ">", '"', "'", "?"]
+invalid_characters = ["\\", "/", "|", "*", "<", ">", '"', "'", "?", "#", ":", ";"]
 default_separator = '_'
 help_text = \
 """Musort (c) 2023 tdeerenberg (github.com/tdeerenberg)
