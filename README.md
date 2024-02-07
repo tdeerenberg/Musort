@@ -34,7 +34,7 @@ The Python3 library TinyTag is also used, but is already included in this reposi
 The installation script will move the python program to `~/.local/bin`. The installation directory can be changed in the `install.sh` script. **Note: The installation directory should be added to $PATH**
 ``` Bash
 git clone https://github.com/tdeerenberg/Musort.git
-cd Musort.git
+cd Musort
 chmod +x install.sh
 ./install.sh
 ```
